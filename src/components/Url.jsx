@@ -1,11 +1,11 @@
 import { React, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "./Url.css";
 
 function Url() {
   const [longUrl, setLongUrl] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const [shortUrl, setShortUrl] = useState("");
 
   const handleUrlChange = (event) => {
@@ -13,20 +13,22 @@ function Url() {
   };
 
   const handleShorten = async () => {
-    let initialData = null;
+    // let initialData = null;
 
     try {
-      const res = await axios.post("http://localhost:8080/url/api/shorturl", {
-        longUrl,
+      const res = await axios.post("http://localhost:3030/shorturl", {
+        method: "POST",
+        body: JSON.stringify(longUrl),
+        headers: {
+          "content-Type": "application/json",
+        },
       });
-
-      console.log(res.data, "The Url responded successfully");
-      initialData = res.data;
-      console.log("this is initialval", initialData);
-      localStorage.setItem("url-Item", JSON.stringify(initialData));
-    } catch (error) {
-      console.error(error, "An error occured");
-      navigate("/url/api/shorturl/");
+      // initialData = res.data;
+      console.log(res.data, "New url created");
+      // localStorage.setItem("url-Item", JSON.stringify(initialData));
+      // window.open("/shorturl/");
+    } catch (err) {
+      console.error(err, "An error occured on Posting longurl");
     }
 
     // axios
@@ -45,16 +47,16 @@ function Url() {
       <p>Example: POST [project_url]/api/shorturl - https://www.google.com</p>
       <div>
         <div className="border">
-        <fieldset>
-          <legend>URL Shortener</legend>
-          <label>URL: </label>
-          <input
-            type="text"
-            placeholder="Enter your long URL"
-            onChange={handleUrlChange}
-          />
-          <button onClick={handleShorten}>POST URL</button>
-        </fieldset>
+          <fieldset>
+            <legend>URL Shortener</legend>
+            <label>URL: </label>
+            <input
+              type="text"
+              placeholder="Enter your long URL"
+              onChange={handleUrlChange}
+            />
+            <button onClick={handleShorten}>POST URL</button>
+          </fieldset>
         </div>
         <div>
           <h2>Example Usage:</h2>
